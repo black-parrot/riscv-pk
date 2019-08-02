@@ -2,6 +2,7 @@
 
 #include "emulation.h"
 #include "fp_emulation.h"
+#include "amo_emulation.h"
 #include "config.h"
 #include "unprivileged_memory.h"
 #include "mtrap.h"
@@ -91,7 +92,7 @@ void illegal_insn_trap(uintptr_t* regs, uintptr_t mcause, uintptr_t mepc)
        "  .word truly_illegal_insn\n"
 #endif
        "  .word truly_illegal_insn\n"
-       "  .word truly_illegal_insn\n"
+       "  .word emulate_amo\n"
 #if !defined(__riscv_muldiv)
        "  .word emulate_mul_div\n"
 #else

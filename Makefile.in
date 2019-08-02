@@ -273,6 +273,7 @@ $(2)_junk += $$($(2)_prog_objs) $$($(2)_prog_deps) $$($(2)_prog_exes)
 $(2)_install_prog_objs := $$(patsubst %.c, %.o, $$($(2)_install_prog_srcs))
 $(2)_install_prog_deps := $$(patsubst %.o, %.d, $$($(2)_install_prog_objs))
 $(2)_install_prog_exes := $$(patsubst %.c, %, $$($(2)_install_prog_srcs))
+$(2)_install_prog_imgs := $$($(2)_install_prog_imgs)
 
 $$($(2)_install_prog_objs) : %.o : %.c
 	$(COMPILE) -c $$<
@@ -283,7 +284,7 @@ $$($(2)_install_prog_exes) : % : %.o $$($(2)_prog_libnames)
 $(2)_c_deps += $$($(2)_install_prog_deps)
 $(2)_junk += \
   $$($(2)_install_prog_objs) $$($(2)_install_prog_deps) \
-  $$($(2)_install_prog_exes)
+  $$($(2)_install_prog_exes) $$($(2)_install_prog_imgs)
 
 # Subproject specific targets
 

@@ -30,6 +30,10 @@ trap_table:
   .word bad_trap
   .word bad_trap
 
+  .globl dtb_start
+dtb_start:
+  .incbin "blackparrot.dtb"
+
   .option norvc
   .section .text.init,"ax",@progbits
   .globl reset_vector
@@ -233,6 +237,8 @@ do_reset:
 // save a0 and a1; arguments from previous boot loader stage:
 //  li x10, 0
 //  li x11, 0
+  csrr a0, mhartid
+  la a1, dtb_start
   li x12, 0
   li x13, 0
   li x14, 0

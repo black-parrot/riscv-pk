@@ -7,6 +7,11 @@
 #include "syscall.h"
 #include <string.h>
 
+#define HOST_DEV_BASE_ADDR ((char *)(0x03000000))
+#define HPRINT_BASE_ADDR ((char *)(HOST_DEV_BASE_ADDR+0x0000))
+#define CPRINT_BASE_ADDR ((char *)(HOST_DEV_BASE_ADDR+0x1000))
+#define FINISH_BASE_ADDR ((char *)(HOST_DEV_BASE_ADDR+0x2000))
+
 extern uint64_t __htif_base;
 volatile uint64_t tohost __attribute__((section(".htif")));
 volatile uint64_t fromhost __attribute__((section(".htif")));
@@ -91,6 +96,7 @@ void htif_syscall(uintptr_t arg)
 
 void htif_console_putchar(uint8_t ch)
 {
+  /*
 #if __riscv_xlen == 32
   // HTIF devices are not supported on RV32, so proxy a write system call
   volatile uint64_t magic_mem[8];
@@ -104,14 +110,25 @@ void htif_console_putchar(uint8_t ch)
     __set_tohost(1, 1, ch);
   spinlock_unlock(&htif_lock);
 #endif
+*/
+
+  uint64_t core_id;
+  __asm__ volatile("csrr %0, mhartid": "=r"(core_id): :);
+  *(CPRINT_BASE_ADDR+core_id*8) = ch;
 }
 
 void htif_poweroff()
 {
+/*
   while (1) {
     fromhost = 0;
     tohost = 1;
   }
+*/
+  uint64_t core_id;
+  __asm__ volatile("csrr %0, mhartid": "=r"(core_id): :);
+  *(FINISH_BASE_ADDR+core_id*8) = 0;
+  while(1) {}
 }
 
 struct htif_scan
