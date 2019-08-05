@@ -226,7 +226,7 @@ void poweroff(uint16_t code)
   printm("Power off\r\n");
   finisher_exit(code);
   if (htif) {
-    htif_poweroff();
+    htif_poweroff(code);
   } else {
     send_ipi_many(0, IPI_HALT);
     while (1) { asm volatile ("wfi\n"); }

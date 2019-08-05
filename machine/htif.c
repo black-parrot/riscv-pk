@@ -117,7 +117,7 @@ void htif_console_putchar(uint8_t ch)
   *(CPRINT_BASE_ADDR+core_id*8) = ch;
 }
 
-void htif_poweroff()
+void htif_poweroff(uint32_t code)
 {
 /*
   while (1) {
@@ -127,7 +127,7 @@ void htif_poweroff()
 */
   uint64_t core_id;
   __asm__ volatile("csrr %0, mhartid": "=r"(core_id): :);
-  *(FINISH_BASE_ADDR+core_id*8) = 0;
+  *(FINISH_BASE_ADDR+core_id*8) = code;
   while(1) {}
 }
 
