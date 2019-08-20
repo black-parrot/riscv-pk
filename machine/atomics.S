@@ -2,6 +2,7 @@
 .option nopic
 .text
 
+.global amo_func
 .global amo_swapw, amo_swapd
 .global amo_addw, amo_addd
 .global amo_xorw, amo_xord
@@ -11,6 +12,16 @@
 .global amo_maxw, amo_maxd
 .global amo_minuw, amo_minud
 .global amo_maxuw, amo_maxud
+
+
+amo_func:
+  mv t5, ra
+  li t6, 0x00020000
+  csrrs t6, mstatus, t6
+  jalr ra, a2
+  csrw mstatus, t6
+  mv ra, t5
+  jalr x0, ra
 
 # AMO_SWAP.W
 # Parameters

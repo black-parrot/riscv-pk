@@ -41,14 +41,15 @@ DECLARE_EMULATION_FUNC(emulate_amo)
   uint8_t opcode = OPCODE(insn);
   uint8_t func3 = FUNCT3(insn);
   uint8_t func5 = FUNCT5(insn);
+  uint64_t (*f)(uint64_t, uint64_t) = amo_jt[func3][func5];
   
   if(opcode != 0x2f)
     return truly_illegal_insn(regs, mcause, mepc, mstatus, insn);
   
-  if(amo_jt[func3][func5] == 0)
+  if(f == 0)
     return truly_illegal_insn(regs, mcause, mepc, mstatus, insn);
   else
-    rd = amo_jt[func3][func5](rs1, rs2);
+    rd = amo_func(rs1, rs2, (uint64_t)f);
 
   SET_RD(insn, regs, rd);
 }

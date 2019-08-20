@@ -1,4 +1,6 @@
 
+extern uint64_t amo_func(uint64_t, uint64_t, uint64_t);
+
 extern uint64_t amo_swapd(uint64_t, uint64_t);
 extern uint64_t amo_swapw(uint64_t, uint64_t);
 
