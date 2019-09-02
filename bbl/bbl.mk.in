@@ -22,8 +22,8 @@ bbl_payload: $(BBL_PAYLOAD)
 	if $(READELF) -h $< 2> /dev/null > /dev/null; then $(OBJCOPY) -O binary --set-section-flags .bss=alloc,load,contents $< $@; else cp $< $@; fi
 
 vmlinux:
-	$(MAKE) -C ../linux/ ARCH=riscv clean defconfig
-	$(MAKE) -C ../linux/ ARCH=riscv -j CROSS_COMPILE=riscv64-unknown-linux-gnu-
+	$(MAKE) -C ../linux/ ARCH=riscv defconfig
+	$(MAKE) -C ../linux/ ARCH=riscv -j CROSS_COMPILE=riscv64-unknown-linux-gnu- CONFIG_INITRAMFS_SOURCE="initramfs.cpio"
 	cp ../linux/vmlinux .
 
 raw_logo.o: bbl_logo_file

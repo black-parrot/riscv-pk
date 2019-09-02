@@ -5,6 +5,8 @@
   #size-cells = <0x00000002>;
   compatible = "ucbbar,spike-bare-dev";
   model = "ucbbar,spike-bare";
+  chosen {
+  };
   cpus {
     #address-cells = <0x00000001>;
     #size-cells = <0x00000000>;
@@ -27,7 +29,7 @@
   };
   memory@80000000 {
     device_type = "memory";
-    reg = <0x00000000 0x80000000 0x00000000 0x80000000>;
+    reg = <0x00000000 0x80000000 0x00000000 0x08000000>;
   };
   soc {
     #address-cells = <0x00000002>;
